@@ -1,0 +1,56 @@
+#header{
+  text-align: center;
+  background-color: #300236 ;
+  color: #d3d4d5;
+  width: 100%;
+  padding-bottom: 2%;
+  margin-bottom: 2%;
+}
+
+#header small{
+  color: #b6b6b6;
+}
+
+.search-input{
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+ngb-pagination{
+  text-align: center;
+}
+#search-bar{
+  margin-top: 1%;
+}
+
+#userSidebar{
+  background-color: #337ab7;
+  border-radius: 10px;
+  color: #ffffff;
+  padding-top: 10px;
+}
+
+#userSidebar p a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#issueList h2{
+  border-bottom: #000000 solid 1px;
+}
+#issueList h3{
+  text-align: center;
+}
+#issueList th,#issueList td:first-child, #issueList td:last-child, #issueList .dates{
+  text-align: center;
+}
+
+.fit-cell, thead th{
+  white-space: nowrap;
+}
+tbody tr:nth-child(even){
+  background: #c7c7c7;
+}
+
+#loading-spinner{
+  text-align: center;
+}

@@ -1,0 +1,129 @@
+<div id="header">
+  <div class="row">
+    <h1><i class="fa fa-list" aria-hidden="true"></i> Issue list
+      <small>by repository <i class="fa fa-github" aria-hidden="true"></i></small>
+    </h1>
+  </div>
+  <div class="container" id="search-bar">
+    <div class="row">
+      <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="col-xs-6">
+          <label class="radio-inline">
+            <input type="radio" [(ngModel)]="searchOpt" id="urlOpt" value="url"> By repository url
+          </label>
+        </div>
+        <div class="col-xs-6">
+          <label class="radio-inline">
+            <input type="radio" [(ngModel)]="searchOpt" id="userOpt" value="user"> By user repositories
+          </label>
+        </div>
+      </div>
+      <div *ngIf="searchOpt == 'url'" class="col-xs-12 col-md-6 col-md-offset-3 search-input">
+        <div class="input-group input-group-lg">
+          <input type="text" class="form-control" placeholder="Repository url..." [(ngModel)]="repositoryUrl">
+          <span class="input-group-btn">
+          <button class="btn btn-primary" type="button" (click)="getIssueListByUrl()"><i class="fa fa-search"
+                                                                                         aria-hidden="true"></i></button>
+        </span>
+        </div>
+      </div>
+      <div *ngIf="searchOpt == 'user'" class="col-xs-12 col-md-7 col-md-offset-3 search-input  form-inline">
+        <div class="row">
+          <div class="col-xs-12 col-md-6">
+            <div class="input-group input-group-lg">
+              <span class="input-group-addon" id="user-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" placeholder="Search user..." [(ngModel)]="userName">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" (click)="getUserRepositories()"><i class="fa fa-search"
+                                                                                                 aria-hidden="true"></i> </button></span>
+            </div>
+          </div>
+          <div class="input-group-lg col-xs-12 col-md-5" *ngIf="repositories">
+            <div *ngIf="repositories.length == 0" class="alert alert-warning" role="alert"><strong>This user haven't
+              repositories</strong></div>
+            <select *ngIf="repositories.length > 0" class="form-control" [(ngModel)]="selectedRepository"
+                    (change)="getIssueListByUserRepository()">
+              <option value="" selected>-- Select Repository --</option>
+              <option *ngFor="let repository of repositories">{{repository.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="error" class="col-xs-12 col-md-4 col-md-offset-4 alert alert-danger" role="alert">
+      <strong>{{error}}</strong>
+    </div>
+  </div>
+</div>
+<div [ngSwitch]="status">
+  <div id="wrap" *ngSwitchCase="'done'">
+    <div class="col-xs-12" *ngIf="issues">
+      <div id="userSidebar" class="col-xs-12 col-md-3">
+        <a href="" class="thumbnail">
+          <img src="{{user.avatar_url}}" alt="User Avatar">
+        </a>
+        <p><strong>Name: </strong>{{user.name}}</p>
+        <p><strong>Company: </strong>{{user.company}}</p>
+        <p *ngIf="user.location"><strong>Location: </strong>{{user.location}}</p>
+        <p *ngIf="user.bio"><strong>Bio: </strong>{{user.bio}}</p>
+        <p><strong>Followers: </strong>{{user.followers}}</p>
+        <p><strong>Following: </strong>{{user.following}}</p>
+        <p><a href="mailto:{{user.email}}"><strong><i class="fa fa-envelope" aria-hidden="true"></i> </strong>{{user.email}}</a>
+        </p>
+        <p><a href="{{user.html_url}}"><strong><i class="fa fa-globe" aria-hidden="true"></i>
+        </strong>{{user.html_url}}</a>
+        </p>
+        <p><a href="{{user.blog}}"><strong><i class="fa fa-rss" aria-hidden="true"></i> </strong>{{user.blog}}</a></p>
+      </div>
+      <div id="issueList" class="col-xs-12 col-md-9">
+        <h2>Repository: <q>{{selectedRepository}}</q></h2>
+        <h3>Issue List</h3>
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>Status</th>
+            <th>Title</th>
+            <th>Labels</th>
+            <th>Creator</th>
+            <th>Creation date</th>
+            <th>Close date</th>
+            <th>More info</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngIf="issues.length == 0">
+            <td colspan="7">This repository haven't issues.</td>
+          </tr>
+          <tr *ngFor="let issue of issues | paginate: { itemsPerPage: 7, currentPage: page }">
+            <td [ngStyle]="issue.state == 'open' && {'color': 'green'} || {'color':'red'}"><i class="fa"
+                                                                                              [ngClass]="{'closed':'fa-lock','open':'fa-unlock'}[issue.state]"
+                                                                                              aria-hidden="true"></i>
+            </td>
+            <td>{{issue.title}}</td>
+            <td>
+              <span *ngFor="let label of issue.labels" class="label label-primary">{{label.name}}</span>
+              <span *ngIf="issue.labels.length == 0" class="label label-default">None</span>
+            </td>
+            <td class="fit-cell">{{issue.user.login}}</td>
+            <td class="fit-cell dates">{{issue.created_at | date:"dd/MM/yyyy"}}</td>
+            <td class="fit-cell dates">{{issue.closed_at | date:"dd/MM/yyyy"}}<span *ngIf="!issue.closed_at">-</span>
+            </td>
+            <td><a class="btn btn-primary" href="{{issue.html_url}}" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i></a></td>
+          </tr>
+          </tbody>
+        </table>
+        <ngb-pagination [collectionSize]="issues.length" [page]="page" (pageChange)="page = $event"
+                        [boundaryLinks]="true">>
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+  <div id="loading-spinner" *ngSwitchCase="'loading'">
+    <img src="../assets/img/spinner.gif" alt="Loading spinner"/>
+  </div>
+</div>
+
+
+
+
+
