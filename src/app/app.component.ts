@@ -10,7 +10,7 @@ import {GithubService} from './github.service';
 })
 export class AppComponent {
   searchOpt = "url";
-  repositoryUrl = "https://api.github.com/repos/octocat/Hello-World/issues";
+  repositoryUrl;
   issues;
   user = {};
   userName = null;
