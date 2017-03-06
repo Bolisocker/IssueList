@@ -6,6 +6,7 @@ Aplicación generada con Angular-CLI para mostrar el listado de 'Issues' que pos
 - IDE (Webstorm, Eclipse, etc.).
 - Git
 - Node.js
+- Angular-CLI
 
 ## Instalación
 1. Descarga el código del repositorio:
