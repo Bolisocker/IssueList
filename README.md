@@ -32,7 +32,7 @@ En el navegador, escribe la siguiente ruta:
   - localhost:4200
     
 ## Versión
-1.0.0
+1.0.1
 
 ## Autor
 - Imanol Jimenez 
