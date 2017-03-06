@@ -33,7 +33,8 @@ export class AppComponent {
           this.user = data
       )
     ;
-    this.githubService.getIssuesByUrl(this.repositoryUrl)
+    this.getRepositoryNameFromUrl();
+    this.githubService.getIssuesByUserRepository(this.getUsernameFromUrl(),this.selectedRepository)
       .subscribe(
         data => {
           this.error = null;
@@ -73,15 +74,15 @@ export class AppComponent {
 
   getUsernameFromUrl(): string {
     // Get user name from url
-    var userName = this.repositoryUrl.substring(this.repositoryUrl.indexOf("repos") + 6);
+    var userName = this.repositoryUrl.substring(this.repositoryUrl.indexOf(".com") + 5);
     userName = userName.substr(0, userName.indexOf("/"));
     return userName;
   }
 
   getRepositoryNameFromUrl() {
     // Get repository name from url
-    this.selectedRepository = this.repositoryUrl.substring(this.repositoryUrl.indexOf("repos") + 7 + this.getUsernameFromUrl().length);
-    this.selectedRepository = this.selectedRepository.substr(0, this.selectedRepository.indexOf("/"));
+    this.selectedRepository = this.repositoryUrl.substring(this.repositoryUrl.indexOf(".com") + 6 + this.getUsernameFromUrl().length);
+    this.selectedRepository = this.selectedRepository.substr(0);
 
   }
 

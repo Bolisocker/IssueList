@@ -10,15 +10,6 @@ export class GithubService {
   constructor(private http: Http) {
   }
 
-  getIssuesByUrl(url: string) {
-    if(url.match(new RegExp('(https://api\\.github\\.com/repos/).*(/issues$)'))){
-      return this.http.get(url)
-        .map(data => data.json())
-        .catch(error => this.handleError(error))
-    }else{
-      return this.handleError(new Error("Invalid url."));
-    }
-  }
 
   getIssuesByUserRepository(user: string, repository:string) {
     var url = "https://api.github.com/repos/";
