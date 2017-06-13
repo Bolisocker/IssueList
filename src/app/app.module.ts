@@ -14,10 +14,8 @@ import { Ng2PaginationModule } from 'ng2-pagination';
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgbModule,
+    NgbModule.forRoot(),
     Ng2PaginationModule
-  ],
-  entryComponents: [
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {GithubService} from './github.service';
+import { Component } from '@angular/core';
+import { GithubService } from './github.service';
 
 
 @Component({
@@ -9,7 +9,7 @@ import {GithubService} from './github.service';
   providers: [GithubService]
 })
 export class AppComponent {
-  searchOpt = "url";
+  searchOpt = 'url';
   repositoryUrl;
   issues;
   user = {};
@@ -17,71 +17,71 @@ export class AppComponent {
   repositories = null;
   page = 1;
   error;
-  selectedRepository = "";
-  status = "done";
+  selectedRepository = '';
+  status = 'done';
 
   constructor(private githubService: GithubService) {
   }
 
 
   getIssueListByUrl(): void {
-    this.status = "loading";
+    this.status = 'loading';
     this.error = null;
     this.githubService.getUserInfo(this.getUsernameFromUrl())
       .subscribe(
-        data =>
-          this.user = data
+      data =>
+        this.user = data
       )
-    ;
+      ;
     this.getRepositoryNameFromUrl();
-    this.githubService.getIssuesByUserRepository(this.getUsernameFromUrl(),this.selectedRepository)
+    this.githubService.getIssuesByUserRepository(this.getUsernameFromUrl(), this.selectedRepository)
       .subscribe(
-        data => {
-          this.error = null;
-          this.issues = data;
-          this.getRepositoryNameFromUrl();
-          this.status = "done";
-        },
-        err => {
-          this.error = err;
-          this.status = "done";
-        }
+      data => {
+        this.error = null;
+        this.issues = data;
+        this.getRepositoryNameFromUrl();
+        this.status = 'done';
+      },
+      err => {
+        this.error = err;
+        this.status = 'done';
+      }
       );
 
   }
 
   getIssueListByUserRepository(): void {
-    this.status = "loading";
+    this.status = 'loading';
     this.error = null;
     this.issues = null;
     this.githubService.getUserInfo(this.userName)
       .subscribe(
-        data => this.user = data
+      data => this.user = data
       );
     this.githubService.getIssuesByUserRepository(this.userName, this.selectedRepository)
       .subscribe(
-        data => {
-            this.issues = data;
-            this.status = "done";
-        },
-        err => {
-          this.error = err;
-          this.status = "done";
-        }
+      data => {
+        this.issues = data;
+        this.status = 'done';
+      },
+      err => {
+        this.error = err;
+        this.status = 'done';
+      }
       );
 
   }
 
   getUsernameFromUrl(): string {
     // Get user name from url
-    var userName = this.repositoryUrl.substring(this.repositoryUrl.indexOf(".com") + 5);
-    userName = userName.substr(0, userName.indexOf("/"));
+    let userName = this.repositoryUrl.substring(this.repositoryUrl.indexOf('.com') + 5);
+    userName = userName.substr(0, userName.indexOf('/'));
     return userName;
   }
 
   getRepositoryNameFromUrl() {
     // Get repository name from url
-    this.selectedRepository = this.repositoryUrl.substring(this.repositoryUrl.indexOf(".com") + 6 + this.getUsernameFromUrl().length);
+    this.selectedRepository = this.repositoryUrl.substring(this.repositoryUrl.indexOf('.com') + 6 + this.getUsernameFromUrl().length);
     this.selectedRepository = this.selectedRepository.substr(0);
 
   }
@@ -89,17 +89,17 @@ export class AppComponent {
   getUserRepositories() {
     if (this.userName != null) {
       this.issues = null;
-      this.selectedRepository = "";
+      this.selectedRepository = '';
       this.repositories = null;
       this.error = null;
       this.githubService.getUserRepositories(this.userName)
         .subscribe(
-          data => {
-            this.repositories = data;
-          },
-          err => {
-            this.error = err;
-          }
+        data => {
+          this.repositories = data;
+        },
+        err => {
+          this.error = err;
+        }
         );
     }
   }

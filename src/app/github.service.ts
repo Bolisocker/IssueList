@@ -1,31 +1,28 @@
-import {Injectable} from '@angular/core';
-import {Headers, Http} from '@angular/http';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import {Observable} from "rxjs";
+import { Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class GithubService {
-  //private headers = new Headers({'Content-Type': 'application/json'});
   constructor(private http: Http) {
   }
 
 
-  getIssuesByUserRepository(user: string, repository:string) {
-    var url = "https://api.github.com/repos/";
-    return this.http.get(url+user+"/"+repository+"/issues")
+  getIssuesByUserRepository(user: string, repository: string) {
+    const url = 'https://api.github.com/repos/';
+    return this.http.get(url + user + '/' + repository + '/issues')
       .map(data => data.json())
       .catch(error => this.handleError(error));
   }
 
   getUserInfo(user: string) {
-    return this.http.get("https://api.github.com/users/" + user)
+    return this.http.get('https://api.github.com/users/' + user)
       .map(data => data.json())
       .catch(error => this.handleError(error))
   }
 
   getUserRepositories(user: string) {
-    return this.http.get("https://api.github.com/users/" + user + "/repos")
+    return this.http.get('https://api.github.com/users/' + user + '/repos')
       .map(data => data.json())
       .catch(error => this.handleError(error))
   }
